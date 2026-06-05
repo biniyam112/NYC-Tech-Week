@@ -1,5 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
 import { structure } from "./lib/structure.js";
 import { enrich, nearbySimilar, areaReports, DEFAULT_BUILDING } from "./lib/enrich.js";
 import { recommend } from "./lib/workflow.js";
@@ -18,7 +20,11 @@ const {
 
 const app = express();
 app.use(express.json());
-app.use(express.static("public"));
+
+// Serve the SPA from an absolute path so it works both locally and when bundled
+// into a Vercel serverless function (where the process CWD is not the repo root).
+const PUBLIC_DIR = join(dirname(fileURLToPath(import.meta.url)), "public");
+app.use(express.static(PUBLIC_DIR));
 
 // --- Token cache (server-side only) -----------------------------------------
 let tokenCache = { accessToken: null, refreshToken: null, expiresAt: 0 };
