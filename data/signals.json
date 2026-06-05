@@ -1,0 +1,804 @@
+[
+  {
+    "id": "93139d9b-91ea-4e77-ba32-3606d0f81c22",
+    "createdAt": "2026-06-05T18:53:48.043Z",
+    "closureStatus": "still",
+    "workOrderId": null,
+    "text": "The second-floor bathroom by the gym smells like sewage again and the floor is wet near the drain. It has been like this since Monday.",
+    "structured": {
+      "issueType": "Plumbing / Sanitary / Drainage",
+      "category": "Plumbing / Sanitary / Drainage",
+      "categoryKey": "plumbing",
+      "location": "floor bathroom",
+      "severity": "Critical",
+      "urgency": "Immediate",
+      "assetCategories": [
+        "Floor drain",
+        "Sanitary line",
+        "Trap primer",
+        "Fixture / valve",
+        "Vent stack"
+      ],
+      "rootCauses": [
+        "Blocked/failed drain",
+        "Trap seal loss (sewer gas)",
+        "Supply leak",
+        "Venting issue",
+        "Backflow"
+      ],
+      "obligations": [
+        "Sanitation",
+        "Plumbing code",
+        "Water intrusion",
+        "Student/occupant experience"
+      ],
+      "nextSteps": [
+        "Inspect floor drain & trap seal",
+        "Check for multiple affected fixtures",
+        "Verify no spread to electrical/egress",
+        "Review prior plumbing work orders"
+      ],
+      "nyc311Types": [
+        "PLUMBING",
+        "WATER LEAK",
+        "SEWER",
+        "WATER SYSTEM"
+      ],
+      "recurring": true,
+      "affected": null,
+      "evidenceQuality": "Text only — weak",
+      "missingInfo": [
+        "Photo / visual evidence",
+        "Is it still happening right now?",
+        "Who/how many are affected?"
+      ],
+      "followUpQuestions": [
+        "Can you add a photo of the issue?",
+        "Is this affecting more than one room/fixture?",
+        "Is water actively spreading, or contained?"
+      ],
+      "cleanDescription": "Plumbing / Sanitary / Drainage issue reported at floor bathroom. Observed: \"The second-floor bathroom by the gym smells like sewage again and the floor is wet near the drain. It has been like this since Monday.\" Reporter indicates this is a recurring condition. Likely root-cause categories: Blocked/failed drain, Trap seal loss (sewer gas), Supply leak. Recommended verification: Inspect floor drain & trap seal; Check for multiple affected fixtures.",
+      "engine": "rule-based"
+    },
+    "workflow": {
+      "cleanedWorkOrder": "Plumbing / Sanitary / Drainage issue reported at floor bathroom. Observed: \"The second-floor bathroom by the gym smells like sewage again and the floor is wet near the drain. It has been like this since Monday.\" Reporter indicates this is a recurring condition. Likely root-cause categories: Blocked/failed drain, Trap seal loss (sewer gas), Supply leak. Recommended verification: Inspect floor drain & trap seal; Check for multiple affected fixtures.",
+      "severity": "Critical",
+      "urgency": "Immediate",
+      "assignmentGroup": "Plumbing / sanitary crew",
+      "assetTags": [
+        "Floor drain",
+        "Sanitary line",
+        "Trap primer",
+        "Fixture / valve",
+        "Vent stack"
+      ],
+      "locationTag": "floor bathroom",
+      "complianceImplications": [
+        "Sanitation",
+        "Plumbing code",
+        "Water intrusion",
+        "Student/occupant experience"
+      ],
+      "publicDataReferences": [
+        {
+          "source": "NYC 311 Service Requests",
+          "meaning": "This building has 20 prior 311 service request(s) on record. Treat this as a likely recurring condition and link the new report to that history before closure. 44069 comparable \"Plumbing / Sanitary / Drainage\" complaints were filed across MANHATTAN in the last 12 months — this is a known, system-wide pattern, which supports prioritizing and standardizing the response."
+        },
+        {
+          "source": "HPD Housing Violations",
+          "meaning": "No HPD violations on record for this address."
+        },
+        {
+          "source": "DOB Violations",
+          "meaning": "25 DOB violation record(s) found. If the field issue involves structural, electrical, or life-safety equipment, link it to this DOB history and verify none of the prior items are unresolved before closing."
+        }
+      ],
+      "evidenceChecklist": [
+        "Photo / visual evidence",
+        "Is it still happening right now?",
+        "Who/how many are affected?"
+      ],
+      "suggestedNextActions": [
+        "Inspect floor drain & trap seal",
+        "Check for multiple affected fixtures",
+        "Verify no spread to electrical/egress",
+        "Review prior plumbing work orders"
+      ],
+      "escalate": true,
+      "escalationReasons": [
+        "Critical severity / safety risk",
+        "Recurring condition — prior fixes did not hold",
+        "Prior 311 history at this address"
+      ],
+      "studentStatusMessage": "Got it. We understood this as a plumbing / sanitary / drainage issue at floor bathroom. We've flagged this as urgent and a team is being dispatched now. We'll check back with you to confirm it's actually fixed.",
+      "closureQuestion": "Following up on your report — is this now: (a) Fixed, (b) Still happening, or (c) Worse? Your answer updates the work order."
+    },
+    "closedAt": "2026-06-05T18:54:48.589Z"
+  },
+  {
+    "id": "eb0ff49f-d2e2-4cb9-b8b2-b12a807e95ec",
+    "createdAt": "2026-06-05T18:53:00.093Z",
+    "closureStatus": null,
+    "workOrderId": null,
+    "text": "The second-floor bathroom by the gym smells like sewage again and the floor is wet near the drain. It has been like this since Monday.",
+    "structured": {
+      "issueType": "Plumbing / Sanitary / Drainage",
+      "category": "Plumbing / Sanitary / Drainage",
+      "categoryKey": "plumbing",
+      "location": "floor bathroom",
+      "severity": "Critical",
+      "urgency": "Immediate",
+      "assetCategories": [
+        "Floor drain",
+        "Sanitary line",
+        "Trap primer",
+        "Fixture / valve",
+        "Vent stack"
+      ],
+      "rootCauses": [
+        "Blocked/failed drain",
+        "Trap seal loss (sewer gas)",
+        "Supply leak",
+        "Venting issue",
+        "Backflow"
+      ],
+      "obligations": [
+        "Sanitation",
+        "Plumbing code",
+        "Water intrusion",
+        "Student/occupant experience"
+      ],
+      "nextSteps": [
+        "Inspect floor drain & trap seal",
+        "Check for multiple affected fixtures",
+        "Verify no spread to electrical/egress",
+        "Review prior plumbing work orders"
+      ],
+      "nyc311Types": [
+        "PLUMBING",
+        "WATER LEAK",
+        "SEWER",
+        "WATER SYSTEM"
+      ],
+      "recurring": true,
+      "affected": null,
+      "evidenceQuality": "Text only — weak",
+      "missingInfo": [
+        "Photo / visual evidence",
+        "Is it still happening right now?",
+        "Who/how many are affected?"
+      ],
+      "followUpQuestions": [
+        "Can you add a photo of the issue?",
+        "Is this affecting more than one room/fixture?",
+        "Is water actively spreading, or contained?"
+      ],
+      "cleanDescription": "Plumbing / Sanitary / Drainage issue reported at floor bathroom. Observed: \"The second-floor bathroom by the gym smells like sewage again and the floor is wet near the drain. It has been like this since Monday.\" Reporter indicates this is a recurring condition. Likely root-cause categories: Blocked/failed drain, Trap seal loss (sewer gas), Supply leak. Recommended verification: Inspect floor drain & trap seal; Check for multiple affected fixtures.",
+      "engine": "rule-based"
+    },
+    "workflow": {
+      "cleanedWorkOrder": "Plumbing / Sanitary / Drainage issue reported at floor bathroom. Observed: \"The second-floor bathroom by the gym smells like sewage again and the floor is wet near the drain. It has been like this since Monday.\" Reporter indicates this is a recurring condition. Likely root-cause categories: Blocked/failed drain, Trap seal loss (sewer gas), Supply leak. Recommended verification: Inspect floor drain & trap seal; Check for multiple affected fixtures.",
+      "severity": "Critical",
+      "urgency": "Immediate",
+      "assignmentGroup": "Plumbing / sanitary crew",
+      "assetTags": [
+        "Floor drain",
+        "Sanitary line",
+        "Trap primer",
+        "Fixture / valve",
+        "Vent stack"
+      ],
+      "locationTag": "floor bathroom",
+      "complianceImplications": [
+        "Sanitation",
+        "Plumbing code",
+        "Water intrusion",
+        "Student/occupant experience"
+      ],
+      "publicDataReferences": [
+        {
+          "source": "NYC 311 Service Requests",
+          "meaning": "This building has 20 prior 311 service request(s) on record. Treat this as a likely recurring condition and link the new report to that history before closure. 44069 comparable \"Plumbing / Sanitary / Drainage\" complaints were filed across MANHATTAN in the last 12 months — this is a known, system-wide pattern, which supports prioritizing and standardizing the response."
+        },
+        {
+          "source": "HPD Housing Violations",
+          "meaning": "No HPD violations on record for this address."
+        },
+        {
+          "source": "DOB Violations",
+          "meaning": "25 DOB violation record(s) found. If the field issue involves structural, electrical, or life-safety equipment, link it to this DOB history and verify none of the prior items are unresolved before closing."
+        }
+      ],
+      "evidenceChecklist": [
+        "Photo / visual evidence",
+        "Is it still happening right now?",
+        "Who/how many are affected?"
+      ],
+      "suggestedNextActions": [
+        "Inspect floor drain & trap seal",
+        "Check for multiple affected fixtures",
+        "Verify no spread to electrical/egress",
+        "Review prior plumbing work orders"
+      ],
+      "escalate": true,
+      "escalationReasons": [
+        "Critical severity / safety risk",
+        "Recurring condition — prior fixes did not hold",
+        "Prior 311 history at this address"
+      ],
+      "studentStatusMessage": "Got it. We understood this as a plumbing / sanitary / drainage issue at floor bathroom. We've flagged this as urgent and a team is being dispatched now. We'll check back with you to confirm it's actually fixed.",
+      "closureQuestion": "Following up on your report — is this now: (a) Fixed, (b) Still happening, or (c) Worse? Your answer updates the work order."
+    }
+  },
+  {
+    "id": "8d9e23ec-900d-42ad-8dfc-911246d42378",
+    "createdAt": "2026-06-05T18:52:55.627Z",
+    "closureStatus": null,
+    "workOrderId": null,
+    "text": "The second-floor bathroom by the gym smells like sewage again and the floor is wet near the drain. It has been like this since Monday.",
+    "structured": {
+      "issueType": "Plumbing / Sanitary / Drainage",
+      "category": "Plumbing / Sanitary / Drainage",
+      "categoryKey": "plumbing",
+      "location": "floor bathroom",
+      "severity": "Critical",
+      "urgency": "Immediate",
+      "assetCategories": [
+        "Floor drain",
+        "Sanitary line",
+        "Trap primer",
+        "Fixture / valve",
+        "Vent stack"
+      ],
+      "rootCauses": [
+        "Blocked/failed drain",
+        "Trap seal loss (sewer gas)",
+        "Supply leak",
+        "Venting issue",
+        "Backflow"
+      ],
+      "obligations": [
+        "Sanitation",
+        "Plumbing code",
+        "Water intrusion",
+        "Student/occupant experience"
+      ],
+      "nextSteps": [
+        "Inspect floor drain & trap seal",
+        "Check for multiple affected fixtures",
+        "Verify no spread to electrical/egress",
+        "Review prior plumbing work orders"
+      ],
+      "nyc311Types": [
+        "PLUMBING",
+        "WATER LEAK",
+        "SEWER",
+        "WATER SYSTEM"
+      ],
+      "recurring": true,
+      "affected": null,
+      "evidenceQuality": "Text only — weak",
+      "missingInfo": [
+        "Photo / visual evidence",
+        "Is it still happening right now?",
+        "Who/how many are affected?"
+      ],
+      "followUpQuestions": [
+        "Can you add a photo of the issue?",
+        "Is this affecting more than one room/fixture?",
+        "Is water actively spreading, or contained?"
+      ],
+      "cleanDescription": "Plumbing / Sanitary / Drainage issue reported at floor bathroom. Observed: \"The second-floor bathroom by the gym smells like sewage again and the floor is wet near the drain. It has been like this since Monday.\" Reporter indicates this is a recurring condition. Likely root-cause categories: Blocked/failed drain, Trap seal loss (sewer gas), Supply leak. Recommended verification: Inspect floor drain & trap seal; Check for multiple affected fixtures.",
+      "engine": "rule-based"
+    },
+    "workflow": {
+      "cleanedWorkOrder": "Plumbing / Sanitary / Drainage issue reported at floor bathroom. Observed: \"The second-floor bathroom by the gym smells like sewage again and the floor is wet near the drain. It has been like this since Monday.\" Reporter indicates this is a recurring condition. Likely root-cause categories: Blocked/failed drain, Trap seal loss (sewer gas), Supply leak. Recommended verification: Inspect floor drain & trap seal; Check for multiple affected fixtures.",
+      "severity": "Critical",
+      "urgency": "Immediate",
+      "assignmentGroup": "Plumbing / sanitary crew",
+      "assetTags": [
+        "Floor drain",
+        "Sanitary line",
+        "Trap primer",
+        "Fixture / valve",
+        "Vent stack"
+      ],
+      "locationTag": "floor bathroom",
+      "complianceImplications": [
+        "Sanitation",
+        "Plumbing code",
+        "Water intrusion",
+        "Student/occupant experience"
+      ],
+      "publicDataReferences": [
+        {
+          "source": "NYC 311 Service Requests",
+          "meaning": "This building has 20 prior 311 service request(s) on record. Treat this as a likely recurring condition and link the new report to that history before closure."
+        },
+        {
+          "source": "HPD Housing Violations",
+          "meaning": "No HPD violations on record for this address."
+        },
+        {
+          "source": "DOB Violations",
+          "meaning": "25 DOB violation record(s) found. If the field issue involves structural, electrical, or life-safety equipment, link it to this DOB history and verify none of the prior items are unresolved before closing."
+        }
+      ],
+      "evidenceChecklist": [
+        "Photo / visual evidence",
+        "Is it still happening right now?",
+        "Who/how many are affected?"
+      ],
+      "suggestedNextActions": [
+        "Inspect floor drain & trap seal",
+        "Check for multiple affected fixtures",
+        "Verify no spread to electrical/egress",
+        "Review prior plumbing work orders"
+      ],
+      "escalate": true,
+      "escalationReasons": [
+        "Critical severity / safety risk",
+        "Recurring condition — prior fixes did not hold",
+        "Prior 311 history at this address"
+      ],
+      "studentStatusMessage": "Got it. We understood this as a plumbing / sanitary / drainage issue at floor bathroom. We've flagged this as urgent and a team is being dispatched now. We'll check back with you to confirm it's actually fixed.",
+      "closureQuestion": "Following up on your report — is this now: (a) Fixed, (b) Still happening, or (c) Worse? Your answer updates the work order."
+    }
+  },
+  {
+    "id": "c41daa1e-cab2-411b-b62b-162ab0ddf864",
+    "createdAt": "2026-06-05T18:41:29.049Z",
+    "closureStatus": "still",
+    "workOrderId": null,
+    "text": "The wall on the 3rd floor is cracking and is scary to look into",
+    "structured": {
+      "issueType": "Structural / Building Envelope",
+      "category": "Structural / Building Envelope",
+      "categoryKey": "structural",
+      "location": "floor is",
+      "severity": "Low",
+      "urgency": "Routine (next visit)",
+      "assetCategories": [
+        "Ceiling / wall",
+        "Window",
+        "Roof / facade",
+        "Floor surface"
+      ],
+      "rootCauses": [
+        "Water damage",
+        "Material failure",
+        "Impact damage",
+        "Aging structure"
+      ],
+      "obligations": [
+        "Building code",
+        "Occupant safety",
+        "Facade inspection (where applicable)"
+      ],
+      "nextSteps": [
+        "Cordon off if falling hazard",
+        "Assess water source",
+        "Document with photo",
+        "Escalate if structural"
+      ],
+      "nyc311Types": [
+        "GENERAL",
+        "Building/Use"
+      ],
+      "recurring": false,
+      "affected": null,
+      "evidenceQuality": "Text only — weak",
+      "missingInfo": [
+        "Photo / visual evidence",
+        "How long has it been happening?",
+        "Is it still happening right now?",
+        "Who/how many are affected?"
+      ],
+      "followUpQuestions": [
+        "Can you add a photo of the issue?",
+        "Is this affecting more than one room/fixture?"
+      ],
+      "cleanDescription": "Structural / Building Envelope issue reported at floor is. Observed: \"The wall on the 3rd floor is cracking and is scary to look into\" Likely root-cause categories: Water damage, Material failure, Impact damage. Recommended verification: Cordon off if falling hazard; Assess water source.",
+      "engine": "rule-based"
+    },
+    "workflow": {
+      "cleanedWorkOrder": "Structural / Building Envelope issue reported at floor is. Observed: \"The wall on the 3rd floor is cracking and is scary to look into\" Likely root-cause categories: Water damage, Material failure, Impact damage. Recommended verification: Cordon off if falling hazard; Assess water source.",
+      "severity": "Low",
+      "urgency": "Routine (next visit)",
+      "assignmentGroup": "Structural / building envelope",
+      "assetTags": [
+        "Ceiling / wall",
+        "Window",
+        "Roof / facade",
+        "Floor surface"
+      ],
+      "locationTag": "floor is",
+      "complianceImplications": [
+        "Building code",
+        "Occupant safety",
+        "Facade inspection (where applicable)"
+      ],
+      "publicDataReferences": [
+        {
+          "source": "NYC 311 Service Requests",
+          "meaning": "This building has 20 prior 311 service request(s) on record. Treat this as a likely recurring condition and link the new report to that history before closure. 11445 comparable \"Structural / Building Envelope\" complaints were filed across MANHATTAN in the last 12 months — this is a known, system-wide pattern, which supports prioritizing and standardizing the response."
+        },
+        {
+          "source": "HPD Housing Violations",
+          "meaning": "No HPD violations on record for this address."
+        },
+        {
+          "source": "DOB Violations",
+          "meaning": "25 DOB violation record(s) found. If the field issue involves structural, electrical, or life-safety equipment, link it to this DOB history and verify none of the prior items are unresolved before closing."
+        }
+      ],
+      "evidenceChecklist": [
+        "Photo / visual evidence",
+        "How long has it been happening?",
+        "Is it still happening right now?",
+        "Who/how many are affected?"
+      ],
+      "suggestedNextActions": [
+        "Cordon off if falling hazard",
+        "Assess water source",
+        "Document with photo",
+        "Escalate if structural"
+      ],
+      "escalate": true,
+      "escalationReasons": [
+        "Prior 311 history at this address"
+      ],
+      "studentStatusMessage": "Got it. We understood this as a structural / building envelope issue at floor is. Thanks for reporting — this is logged and scheduled for the next maintenance visit. We'll check back with you to confirm it's actually fixed.",
+      "closureQuestion": "Following up on your report — is this now: (a) Fixed, (b) Still happening, or (c) Worse? Your answer updates the work order."
+    },
+    "closedAt": "2026-06-05T18:41:46.623Z"
+  },
+  {
+    "id": "d211c281-6a43-430d-a265-e2946bde7b5c",
+    "createdAt": "2026-06-05T18:39:52.165Z",
+    "closureStatus": "still",
+    "workOrderId": null,
+    "text": "The second-floor bathroom by the gym smells like sewage again and the floor is wet near the drain. It has been like this since Monday.",
+    "structured": {
+      "issueType": "Plumbing / Sanitary / Drainage",
+      "category": "Plumbing / Sanitary / Drainage",
+      "categoryKey": "plumbing",
+      "location": "floor bathroom",
+      "severity": "Critical",
+      "urgency": "Immediate",
+      "assetCategories": [
+        "Floor drain",
+        "Sanitary line",
+        "Trap primer",
+        "Fixture / valve",
+        "Vent stack"
+      ],
+      "rootCauses": [
+        "Blocked/failed drain",
+        "Trap seal loss (sewer gas)",
+        "Supply leak",
+        "Venting issue",
+        "Backflow"
+      ],
+      "obligations": [
+        "Sanitation",
+        "Plumbing code",
+        "Water intrusion",
+        "Student/occupant experience"
+      ],
+      "nextSteps": [
+        "Inspect floor drain & trap seal",
+        "Check for multiple affected fixtures",
+        "Verify no spread to electrical/egress",
+        "Review prior plumbing work orders"
+      ],
+      "nyc311Types": [
+        "PLUMBING",
+        "WATER LEAK",
+        "SEWER",
+        "WATER SYSTEM"
+      ],
+      "recurring": true,
+      "affected": null,
+      "evidenceQuality": "Text only — weak",
+      "missingInfo": [
+        "Photo / visual evidence",
+        "Is it still happening right now?",
+        "Who/how many are affected?"
+      ],
+      "followUpQuestions": [
+        "Can you add a photo of the issue?",
+        "Is this affecting more than one room/fixture?",
+        "Is water actively spreading, or contained?"
+      ],
+      "cleanDescription": "Plumbing / Sanitary / Drainage issue reported at floor bathroom. Observed: \"The second-floor bathroom by the gym smells like sewage again and the floor is wet near the drain. It has been like this since Monday.\" Reporter indicates this is a recurring condition. Likely root-cause categories: Blocked/failed drain, Trap seal loss (sewer gas), Supply leak. Recommended verification: Inspect floor drain & trap seal; Check for multiple affected fixtures.",
+      "engine": "rule-based"
+    },
+    "workflow": {
+      "cleanedWorkOrder": "Plumbing / Sanitary / Drainage issue reported at floor bathroom. Observed: \"The second-floor bathroom by the gym smells like sewage again and the floor is wet near the drain. It has been like this since Monday.\" Reporter indicates this is a recurring condition. Likely root-cause categories: Blocked/failed drain, Trap seal loss (sewer gas), Supply leak. Recommended verification: Inspect floor drain & trap seal; Check for multiple affected fixtures.",
+      "severity": "Critical",
+      "urgency": "Immediate",
+      "assignmentGroup": "Plumbing / sanitary crew",
+      "assetTags": [
+        "Floor drain",
+        "Sanitary line",
+        "Trap primer",
+        "Fixture / valve",
+        "Vent stack"
+      ],
+      "locationTag": "floor bathroom",
+      "complianceImplications": [
+        "Sanitation",
+        "Plumbing code",
+        "Water intrusion",
+        "Student/occupant experience"
+      ],
+      "publicDataReferences": [
+        {
+          "source": "NYC 311 Service Requests",
+          "meaning": "This building has 20 prior 311 service request(s) on record. Treat this as a likely recurring condition and link the new report to that history before closure. 44069 comparable \"Plumbing / Sanitary / Drainage\" complaints were filed across MANHATTAN in the last 12 months — this is a known, system-wide pattern, which supports prioritizing and standardizing the response."
+        },
+        {
+          "source": "HPD Housing Violations",
+          "meaning": "No HPD violations on record for this address."
+        },
+        {
+          "source": "DOB Violations",
+          "meaning": "25 DOB violation record(s) found. If the field issue involves structural, electrical, or life-safety equipment, link it to this DOB history and verify none of the prior items are unresolved before closing."
+        }
+      ],
+      "evidenceChecklist": [
+        "Photo / visual evidence",
+        "Is it still happening right now?",
+        "Who/how many are affected?"
+      ],
+      "suggestedNextActions": [
+        "Inspect floor drain & trap seal",
+        "Check for multiple affected fixtures",
+        "Verify no spread to electrical/egress",
+        "Review prior plumbing work orders"
+      ],
+      "escalate": true,
+      "escalationReasons": [
+        "Critical severity / safety risk",
+        "Recurring condition — prior fixes did not hold",
+        "Prior 311 history at this address"
+      ],
+      "studentStatusMessage": "Got it. We understood this as a plumbing / sanitary / drainage issue at floor bathroom. We've flagged this as urgent and a team is being dispatched now. We'll check back with you to confirm it's actually fixed.",
+      "closureQuestion": "Following up on your report — is this now: (a) Fixed, (b) Still happening, or (c) Worse? Your answer updates the work order."
+    },
+    "closedAt": "2026-06-05T18:40:26.484Z"
+  },
+  {
+    "id": "b4ee00f3-bf71-4e16-98a8-a3a1c3d91ec8",
+    "createdAt": "2026-06-05T18:37:55.340Z",
+    "closureStatus": "worse",
+    "workOrderId": null,
+    "text": "Smells like sewage again and the floor is wet near the drain. It has been like this since Monday.",
+    "structured": {
+      "issueType": "Plumbing / Sanitary / Drainage",
+      "category": "Plumbing / Sanitary / Drainage",
+      "categoryKey": "plumbing",
+      "location": "floor is",
+      "severity": "Critical",
+      "urgency": "Immediate",
+      "assetCategories": [
+        "Floor drain",
+        "Sanitary line",
+        "Trap primer",
+        "Fixture / valve",
+        "Vent stack"
+      ],
+      "rootCauses": [
+        "Blocked/failed drain",
+        "Trap seal loss (sewer gas)",
+        "Supply leak",
+        "Venting issue",
+        "Backflow"
+      ],
+      "obligations": [
+        "Sanitation",
+        "Plumbing code",
+        "Water intrusion",
+        "Student/occupant experience"
+      ],
+      "nextSteps": [
+        "Inspect floor drain & trap seal",
+        "Check for multiple affected fixtures",
+        "Verify no spread to electrical/egress",
+        "Review prior plumbing work orders"
+      ],
+      "nyc311Types": [
+        "PLUMBING",
+        "WATER LEAK",
+        "SEWER",
+        "WATER SYSTEM"
+      ],
+      "recurring": true,
+      "affected": null,
+      "evidenceQuality": "Text only — weak",
+      "missingInfo": [
+        "Photo / visual evidence",
+        "Is it still happening right now?",
+        "Who/how many are affected?"
+      ],
+      "followUpQuestions": [
+        "Can you add a photo of the issue?",
+        "Is this affecting more than one room/fixture?",
+        "Is water actively spreading, or contained?"
+      ],
+      "cleanDescription": "Plumbing / Sanitary / Drainage issue reported at floor is. Observed: \"Smells like sewage again and the floor is wet near the drain. It has been like this since Monday.\" Reporter indicates this is a recurring condition. Likely root-cause categories: Blocked/failed drain, Trap seal loss (sewer gas), Supply leak. Recommended verification: Inspect floor drain & trap seal; Check for multiple affected fixtures.",
+      "engine": "rule-based"
+    },
+    "workflow": {
+      "cleanedWorkOrder": "Plumbing / Sanitary / Drainage issue reported at floor is. Observed: \"Smells like sewage again and the floor is wet near the drain. It has been like this since Monday.\" Reporter indicates this is a recurring condition. Likely root-cause categories: Blocked/failed drain, Trap seal loss (sewer gas), Supply leak. Recommended verification: Inspect floor drain & trap seal; Check for multiple affected fixtures.",
+      "severity": "Critical",
+      "urgency": "Immediate",
+      "assignmentGroup": "Plumbing / sanitary crew",
+      "assetTags": [
+        "Floor drain",
+        "Sanitary line",
+        "Trap primer",
+        "Fixture / valve",
+        "Vent stack"
+      ],
+      "locationTag": "floor is",
+      "complianceImplications": [
+        "Sanitation",
+        "Plumbing code",
+        "Water intrusion",
+        "Student/occupant experience"
+      ],
+      "publicDataReferences": [
+        {
+          "source": "NYC 311 Service Requests",
+          "meaning": "This building has 20 prior 311 service request(s) on record. Treat this as a likely recurring condition and link the new report to that history before closure. 44069 comparable \"Plumbing / Sanitary / Drainage\" complaints were filed across MANHATTAN in the last 12 months — this is a known, system-wide pattern, which supports prioritizing and standardizing the response."
+        },
+        {
+          "source": "HPD Housing Violations",
+          "meaning": "No HPD violations on record for this address."
+        },
+        {
+          "source": "DOB Violations",
+          "meaning": "25 DOB violation record(s) found. If the field issue involves structural, electrical, or life-safety equipment, link it to this DOB history and verify none of the prior items are unresolved before closing."
+        }
+      ],
+      "evidenceChecklist": [
+        "Photo / visual evidence",
+        "Is it still happening right now?",
+        "Who/how many are affected?"
+      ],
+      "suggestedNextActions": [
+        "Inspect floor drain & trap seal",
+        "Check for multiple affected fixtures",
+        "Verify no spread to electrical/egress",
+        "Review prior plumbing work orders"
+      ],
+      "escalate": true,
+      "escalationReasons": [
+        "Critical severity / safety risk",
+        "Recurring condition — prior fixes did not hold",
+        "Prior 311 history at this address"
+      ],
+      "studentStatusMessage": "Got it. We understood this as a plumbing / sanitary / drainage issue at floor is. We've flagged this as urgent and a team is being dispatched now. We'll check back with you to confirm it's actually fixed.",
+      "closureQuestion": "Following up on your report — is this now: (a) Fixed, (b) Still happening, or (c) Worse? Your answer updates the work order."
+    },
+    "closedAt": "2026-06-05T18:37:58.799Z"
+  },
+  {
+    "id": "b4adb8ca-7f5e-464b-b8ee-4c43619c0995",
+    "createdAt": "2026-06-05T18:37:10.373Z",
+    "closureStatus": "worse",
+    "workOrderId": null,
+    "text": "Smells like sewage again and the floor is wet near the drain. It has been like this since Monday.",
+    "structured": {
+      "issueType": "Plumbing / Sanitary / Drainage",
+      "category": "Plumbing / Sanitary / Drainage",
+      "categoryKey": "plumbing",
+      "location": "floor is",
+      "severity": "Critical",
+      "urgency": "Immediate",
+      "assetCategories": [
+        "Floor drain",
+        "Sanitary line",
+        "Trap primer",
+        "Fixture / valve",
+        "Vent stack"
+      ],
+      "rootCauses": [
+        "Blocked/failed drain",
+        "Trap seal loss (sewer gas)",
+        "Supply leak",
+        "Venting issue",
+        "Backflow"
+      ],
+      "obligations": [
+        "Sanitation",
+        "Plumbing code",
+        "Water intrusion",
+        "Student/occupant experience"
+      ],
+      "nextSteps": [
+        "Inspect floor drain & trap seal",
+        "Check for multiple affected fixtures",
+        "Verify no spread to electrical/egress",
+        "Review prior plumbing work orders"
+      ],
+      "nyc311Types": [
+        "PLUMBING",
+        "WATER LEAK",
+        "SEWER",
+        "WATER SYSTEM"
+      ],
+      "recurring": true,
+      "affected": null,
+      "evidenceQuality": "Text only — weak",
+      "missingInfo": [
+        "Photo / visual evidence",
+        "Is it still happening right now?",
+        "Who/how many are affected?"
+      ],
+      "followUpQuestions": [
+        "Can you add a photo of the issue?",
+        "Is this affecting more than one room/fixture?",
+        "Is water actively spreading, or contained?"
+      ],
+      "cleanDescription": "Plumbing / Sanitary / Drainage issue reported at floor is. Observed: \"Smells like sewage again and the floor is wet near the drain. It has been like this since Monday.\" Reporter indicates this is a recurring condition. Likely root-cause categories: Blocked/failed drain, Trap seal loss (sewer gas), Supply leak. Recommended verification: Inspect floor drain & trap seal; Check for multiple affected fixtures.",
+      "engine": "rule-based"
+    },
+    "workflow": {
+      "cleanedWorkOrder": "Plumbing / Sanitary / Drainage issue reported at floor is. Observed: \"Smells like sewage again and the floor is wet near the drain. It has been like this since Monday.\" Reporter indicates this is a recurring condition. Likely root-cause categories: Blocked/failed drain, Trap seal loss (sewer gas), Supply leak. Recommended verification: Inspect floor drain & trap seal; Check for multiple affected fixtures.",
+      "severity": "Critical",
+      "urgency": "Immediate",
+      "assignmentGroup": "Plumbing / sanitary crew",
+      "assetTags": [
+        "Floor drain",
+        "Sanitary line",
+        "Trap primer",
+        "Fixture / valve",
+        "Vent stack"
+      ],
+      "locationTag": "floor is",
+      "complianceImplications": [
+        "Sanitation",
+        "Plumbing code",
+        "Water intrusion",
+        "Student/occupant experience"
+      ],
+      "publicDataReferences": [
+        {
+          "source": "NYC 311 Service Requests",
+          "meaning": "This building has 20 prior 311 service request(s) on record. Treat this as a likely recurring condition and link the new report to that history before closure."
+        },
+        {
+          "source": "HPD Housing Violations",
+          "meaning": "No HPD violations on record for this address."
+        },
+        {
+          "source": "DOB Violations",
+          "meaning": "25 DOB violation record(s) found. If the field issue involves structural, electrical, or life-safety equipment, link it to this DOB history and verify none of the prior items are unresolved before closing."
+        }
+      ],
+      "evidenceChecklist": [
+        "Photo / visual evidence",
+        "Is it still happening right now?",
+        "Who/how many are affected?"
+      ],
+      "suggestedNextActions": [
+        "Inspect floor drain & trap seal",
+        "Check for multiple affected fixtures",
+        "Verify no spread to electrical/egress",
+        "Review prior plumbing work orders"
+      ],
+      "escalate": true,
+      "escalationReasons": [
+        "Critical severity / safety risk",
+        "Recurring condition — prior fixes did not hold",
+        "Prior 311 history at this address"
+      ],
+      "studentStatusMessage": "Got it. We understood this as a plumbing / sanitary / drainage issue at floor is. We've flagged this as urgent and a team is being dispatched now. We'll check back with you to confirm it's actually fixed.",
+      "closureQuestion": "Following up on your report — is this now: (a) Fixed, (b) Still happening, or (c) Worse? Your answer updates the work order."
+    },
+    "closedAt": "2026-06-05T18:37:45.302Z"
+  }
+]
