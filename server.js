@@ -1,9 +1,10 @@
 import express from "express";
 import dotenv from "dotenv";
 import { structure } from "./lib/structure.js";
-import { enrich, DEFAULT_BUILDING } from "./lib/enrich.js";
+import { enrich, nearbySimilar, areaReports, DEFAULT_BUILDING } from "./lib/enrich.js";
 import { recommend } from "./lib/workflow.js";
-import { listSignals, addSignal, setClosure } from "./lib/store.js";
+import { composeEmail } from "./lib/agency.js";
+import { listSignals, addSignal, setClosure, addOutbox, listOutbox } from "./lib/store.js";
 
 dotenv.config();
 
@@ -330,6 +331,93 @@ app.post("/api/signals", (req, res) => {
   res.json({ signal: addSignal({ workOrderId: workOrderId ?? null, text, structured, workflow }) });
 });
 
+// --- Agency email: compose + send -------------------------------------------
+app.post("/api/compose", async (req, res) => {
+  try {
+    const { structured, workflow, enrichment, workOrder } = req.body || {};
+    if (!structured) return res.status(400).json({ error: "Missing 'structured'." });
+    const email = await composeEmail({ structured, workflow, enrichment, building: DEFAULT_BUILDING, workOrder });
+    res.json({ email });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/api/send-email", async (req, res) => {
+  const { to, cc, subject, body, agency } = req.body || {};
+  if (!to || !subject || !body) return res.status(400).json({ error: "Missing to/subject/body." });
+
+  const smtpConfigured = Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
+  let sent = false;
+  let detail = "";
+  try {
+    if (smtpConfigured) {
+      const nodemailer = (await import("nodemailer")).default;
+      const transport = nodemailer.createTransport({
+        host: process.env.SMTP_HOST,
+        port: Number(process.env.SMTP_PORT || 587),
+        secure: process.env.SMTP_SECURE === "true",
+        auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+      });
+      const info = await transport.sendMail({
+        from: process.env.SMTP_FROM || process.env.SMTP_USER,
+        to,
+        cc: cc?.length ? cc.join(",") : undefined,
+        subject,
+        text: body,
+      });
+      sent = true;
+      detail = `Delivered via SMTP (${info.messageId}).`;
+    } else {
+      detail = "SMTP not configured — logged to outbox. Use 'Open in mail client' to send manually.";
+    }
+  } catch (err) {
+    detail = `SMTP send failed: ${err.message}. Logged to outbox instead.`;
+  }
+
+  const record = addOutbox({ to, cc: cc || [], subject, body, agency: agency || null, sent, detail });
+  res.json({ ok: true, sent, simulated: !sent, detail, record });
+});
+
+app.get("/api/outbox", (_req, res) => res.json({ outbox: listOutbox() }));
+
+// Building coordinates (from CriticalAsset), cached. Falls back to LES default.
+let cachedCoords = null;
+async function getBuildingCoords() {
+  if (cachedCoords) return cachedCoords;
+  try {
+    const { json } = await authedQuery("query { locations { coordinates } }", {});
+    const raw = json.data?.locations?.[0]?.coordinates;
+    const m = raw && raw.match(/\(?\s*(-?\d+\.?\d*)\s*,\s*(-?\d+\.?\d*)\s*\)?/);
+    if (m) cachedCoords = { lat: Number(m[1]), lng: Number(m[2]) };
+  } catch { /* ignore */ }
+  return cachedCoords || { lat: 40.7114447, lng: -73.9854894 };
+}
+
+// Map: nearby buildings with the same category of 311 complaint.
+app.post("/api/nearby", async (req, res) => {
+  try {
+    const { nyc311Types, radiusM } = req.body || {};
+    const center = await getBuildingCoords();
+    const result = await nearbySimilar({ types: nyc311Types, center, radiusM: radiusM || 1200 });
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Map tab: operational area view of facility-relevant 311 reports around the building.
+app.post("/api/area-map", async (req, res) => {
+  try {
+    const { radiusM, months } = req.body || {};
+    const center = await getBuildingCoords();
+    const result = await areaReports({ center, radiusM: radiusM || 1000, months: months || 12 });
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.post("/api/signals/:id/closure", (req, res) => {
   const { status } = req.body || {};
   if (!["fixed", "still", "worse"].includes(status))
@@ -350,12 +438,18 @@ app.get("/api/health", async (_req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`\n  327 Cherry Street ops dashboard → http://localhost:${PORT}`);
-  console.log(`  CriticalAsset endpoint: ${CA_API_URL}`);
-  if (!CA_CLIENT_ID || !CA_CLIENT_SECRET) {
-    console.log("  ⚠  No credentials yet. Copy .env.example → .env and paste them.\n");
-  } else {
-    console.log("");
-  }
-});
+// On Vercel the app runs as a serverless function (exported below); a long-lived
+// listener is only started for local development.
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`\n  327 Cherry Street ops dashboard → http://localhost:${PORT}`);
+    console.log(`  CriticalAsset endpoint: ${CA_API_URL}`);
+    if (!CA_CLIENT_ID || !CA_CLIENT_SECRET) {
+      console.log("  ⚠  No credentials yet. Copy .env.example → .env and paste them.\n");
+    } else {
+      console.log("");
+    }
+  });
+}
+
+export default app;

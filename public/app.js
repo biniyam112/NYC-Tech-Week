@@ -305,6 +305,8 @@ const svgX = {
   shield: '<svg viewBox="0 0 16 16" class="ico"><path d="M8 2l5 2v4c0 3-2 5-5 6-3-1-5-3-5-6V4z"/></svg>',
   arrow: '<svg viewBox="0 0 16 16" class="ico"><path d="M3 8h10M9 4l4 4-4 4"/></svg>',
   check: '<svg viewBox="0 0 16 16" class="ico"><path d="M3 8.5l3 3 7-7"/></svg>',
+  print: '<svg viewBox="0 0 16 16" class="ico"><path d="M4 6V2h8v4M4 12H3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-1M4 10h8v4H4z"/></svg>',
+  mail: '<svg viewBox="0 0 16 16" class="ico"><rect x="2" y="3.5" width="12" height="9" rx="1.5"/><path d="m2.5 4.5 5.5 4 5.5-4"/></svg>',
 };
 
 async function runCopilot({ text, location, workOrderId }, container) {
@@ -355,11 +357,185 @@ async function runCopilot({ text, location, workOrderId }, container) {
     signalId = saved.signal?.id;
   } catch { /* non-fatal */ }
 
+  state.lastReport = {
+    structured: result.structured,
+    workflow: result.workflow,
+    enrichment: result.enrichment,
+    workOrder: createdWO,
+    text,
+  };
+
   container.innerHTML = copilotHtml(result, signalId, createdWO);
   wireClosure(container, signalId);
+  wireReportActions(container);
 
   // Refresh the board so the newly created work order shows up live.
   if (createdWO) load();
+}
+
+function wireReportActions(container) {
+  const printBtn = container.querySelector('[data-cop-action="print"]');
+  const emailBtn = container.querySelector('[data-cop-action="email"]');
+  if (printBtn) printBtn.addEventListener("click", () => printReport(state.lastReport));
+  if (emailBtn) emailBtn.addEventListener("click", () => openEmailModal(state.lastReport));
+  initNearbyMap(container, state.lastReport);
+}
+
+async function initNearbyMap(container, report) {
+  const el = container.querySelector(".cop-map");
+  if (!el) return;
+  if (!window.L) { el.innerHTML = `<div class="map-loading">Map library unavailable offline</div>`; return; }
+  el.innerHTML = `<div class="map-loading"><span class="spinner"></span></div>`;
+  let data;
+  try {
+    const res = await fetch("/api/nearby", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ nyc311Types: report?.structured?.nyc311Types || [] }),
+    });
+    data = await res.json();
+  } catch {
+    el.innerHTML = `<div class="map-loading">Could not load nearby data</div>`;
+    return;
+  }
+  el.innerHTML = "";
+  const { lat, lng } = data.center;
+  const map = L.map(el, { scrollWheelZoom: false, attributionControl: true }).setView([lat, lng], 15);
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+    attribution: "© OpenStreetMap © CARTO",
+    maxZoom: 19,
+  }).addTo(map);
+
+  // Search radius + the building itself.
+  L.circle([lat, lng], { radius: data.radiusM, color: "#6e56cf", weight: 1, fillOpacity: 0.05 }).addTo(map);
+  L.circleMarker([lat, lng], { radius: 9, color: "#fff", weight: 2, fillColor: "#6e56cf", fillOpacity: 1 })
+    .addTo(map)
+    .bindPopup("<strong>327 Cherry Street</strong><br>This building");
+
+  const sixMonthsAgo = Date.now() - 182 * 24 * 3600 * 1000;
+  (data.points || []).forEach((p) => {
+    const recent = p.date && new Date(p.date).getTime() > sixMonthsAgo;
+    L.circleMarker([p.lat, p.lng], {
+      radius: 5,
+      color: recent ? "#f0506e" : "#f5a524",
+      weight: 1,
+      fillColor: recent ? "#f0506e" : "#f5a524",
+      fillOpacity: 0.7,
+    })
+      .addTo(map)
+      .bindPopup(`<strong>${esc(p.type)}</strong><br>${esc(p.detail || "")}<br>${esc(p.address || "")}<br><span style="color:#9aa4b2">${esc(p.date || "")} · ${esc(p.status || "")}</span>`);
+  });
+
+  const countEl = container.querySelector(".map-count");
+  if (countEl) countEl.textContent = `${data.count} similar 311 reports within ${Math.round(data.radiusM)}m (last 3 yrs)`;
+  setTimeout(() => map.invalidateSize(), 200);
+}
+
+// ---------- Standalone Map view ----------
+const area = { map: null, layers: {}, hidden: new Set(), loaded: false };
+
+function ensureAreaMap() {
+  if (!area.loaded) {
+    area.loaded = true;
+    loadAreaMap();
+  } else if (area.map) {
+    setTimeout(() => area.map.invalidateSize(), 100);
+  }
+}
+
+function fmtRadius(m) {
+  return m >= 1000 ? `${m / 1000} km` : `${m} m`;
+}
+
+async function loadAreaMap() {
+  const el = $("area-map");
+  if (!window.L) {
+    el.innerHTML = `<div class="map-loading">Map library unavailable offline</div>`;
+    return;
+  }
+  $("map-summary").innerHTML = `<div class="loading-row"><span class="spinner"></span> Loading area reports…</div>`;
+  $("map-legend").innerHTML = "";
+  const radiusM = Number($("map-radius").value);
+  const months = Number($("map-window").value);
+  let data;
+  try {
+    const res = await fetch("/api/area-map", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ radiusM, months }),
+    });
+    data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Area map failed");
+  } catch (err) {
+    $("map-summary").innerHTML = `<div class="sub" style="color:var(--crit)">Could not load: ${esc(err.message)}</div>`;
+    return;
+  }
+  renderAreaMap(data);
+}
+
+function renderAreaMap(data) {
+  const el = $("area-map");
+  if (area.map) { area.map.remove(); area.map = null; }
+  area.layers = {};
+  area.hidden.clear();
+  el.innerHTML = "";
+
+  const { lat, lng } = data.center;
+  const zoom = data.radiusM >= 2000 ? 13 : data.radiusM >= 1000 ? 14 : 15;
+  const map = L.map(el, { scrollWheelZoom: true, attributionControl: true }).setView([lat, lng], zoom);
+  area.map = map;
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+    attribution: "© OpenStreetMap © CARTO",
+    maxZoom: 19,
+  }).addTo(map);
+
+  L.circle([lat, lng], { radius: data.radiusM, color: "#6e56cf", weight: 1, fillOpacity: 0.04 }).addTo(map);
+  L.circleMarker([lat, lng], { radius: 9, color: "#fff", weight: 2, fillColor: "#6e56cf", fillOpacity: 1 })
+    .addTo(map)
+    .bindPopup("<strong>327 Cherry Street</strong><br>Your building");
+
+  (data.points || []).forEach((p) => {
+    if (!area.layers[p.category]) area.layers[p.category] = L.layerGroup().addTo(map);
+    L.circleMarker([p.lat, p.lng], { radius: 5, color: p.color, weight: 1, fillColor: p.color, fillOpacity: 0.75 })
+      .addTo(area.layers[p.category])
+      .bindPopup(`<strong>${esc(p.type)}</strong><br>${esc(p.detail || "")}<br>${esc(p.address || "")}<br><span style="color:#9aa4b2">${esc(p.date || "")} · ${esc(p.status || "")}</span>`);
+  });
+
+  $("map-summary").innerHTML =
+    `<div class="big">${data.count}</div><div class="sub">facility 311 reports within ${fmtRadius(data.radiusM)} · last ${data.months} mo</div>`;
+
+  const legend = $("map-legend");
+  if (!(data.byCategory || []).length) {
+    legend.innerHTML = `<div class="sub" style="color:var(--text-3);padding:4px 2px">No facility reports in this area/window.</div>`;
+    return;
+  }
+  legend.innerHTML = data.byCategory
+    .map((c) => `<div class="legend-row" data-cat="${esc(c.key)}">
+      <span class="dot" style="background:${c.color}"></span>
+      <span class="name">${esc(c.key)}</span>
+      <span class="n">${c.count}</span>
+    </div>`)
+    .join("");
+  legend.querySelectorAll(".legend-row").forEach((row) =>
+    row.addEventListener("click", () => toggleCategory(row))
+  );
+
+  setTimeout(() => map.invalidateSize(), 150);
+}
+
+function toggleCategory(row) {
+  const cat = row.dataset.cat;
+  const layer = area.layers[cat];
+  if (!layer || !area.map) return;
+  if (area.hidden.has(cat)) {
+    area.hidden.delete(cat);
+    layer.addTo(area.map);
+    row.classList.remove("off");
+  } else {
+    area.hidden.add(cat);
+    area.map.removeLayer(layer);
+    row.classList.add("off");
+  }
 }
 
 function copilotHtml(r, signalId, createdWO) {
@@ -404,6 +580,17 @@ function copilotHtml(r, signalId, createdWO) {
     </div>
 
     <div class="cop-section">
+      <h4>${svgX.globe} Nearby reports of the same problem <span class="src-badge">LIVE 311</span></h4>
+      <div class="cop-map"></div>
+      <div class="map-legend">
+        <span><i class="lg-bldg"></i> This building</span>
+        <span><i class="lg-recent"></i> &lt; 6 months</span>
+        <span><i class="lg-old"></i> older</span>
+        <span class="map-count"></span>
+      </div>
+    </div>
+
+    <div class="cop-section">
       <h4>${svgX.shield} Compliance / obligations</h4>
       <div class="cop-tags">${w.complianceImplications.map((c) => `<span class="cop-tag">${esc(c)}</span>`).join("")}</div>
     </div>
@@ -434,6 +621,14 @@ function copilotHtml(r, signalId, createdWO) {
         <button class="closure-btn worse" data-status="worse">Worse</button>
       </div>
     </div>` : ""}
+
+    <div class="cop-section">
+      <h4>${svgX.arrow} Report actions</h4>
+      <div class="cop-actions">
+        <button class="btn-ghost" data-cop-action="print">${svgX.print} Print report</button>
+        <button class="btn-ghost" data-cop-action="email">${svgX.mail} Email agency</button>
+      </div>
+    </div>
 
     <div class="cop-engine">Structured by: ${esc(s.engine)}</div>
   </div>`;
@@ -478,12 +673,151 @@ function closeIntake() {
   $("intake-backdrop").hidden = true;
 }
 
+// ---------- Email agency ----------
+async function openEmailModal(report) {
+  if (!report) return;
+  $("email-modal").hidden = false;
+  $("email-backdrop").hidden = false;
+  $("email-status").hidden = true;
+  $("email-agency-note").textContent = "Drafting…";
+  $("email-to").value = $("email-subject").value = $("email-cc").value = "";
+  $("email-body").value = "Composing…";
+  try {
+    const res = await fetch("/api/compose", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(report),
+    });
+    const { email, error } = await res.json();
+    if (!res.ok) throw new Error(error || "Compose failed");
+    $("email-agency-note").textContent = `Routed to ${email.agency} — ${email.rationale}`;
+    $("email-to").value = email.to;
+    $("email-cc").value = (email.cc || []).join(", ");
+    $("email-subject").value = email.subject;
+    $("email-body").value = email.body;
+    $("email-modal").dataset.agency = email.agency;
+  } catch (err) {
+    $("email-body").value = "";
+    showEmailStatus("err", err.message);
+  }
+}
+function closeEmail() {
+  $("email-modal").hidden = true;
+  $("email-backdrop").hidden = true;
+}
+function emailFields() {
+  return {
+    to: $("email-to").value.trim(),
+    cc: $("email-cc").value.split(",").map((s) => s.trim()).filter(Boolean),
+    subject: $("email-subject").value.trim(),
+    body: $("email-body").value,
+    agency: $("email-modal").dataset.agency || null,
+  };
+}
+function showEmailStatus(cls, msg) {
+  const el = $("email-status");
+  el.className = `email-status ${cls}`;
+  el.textContent = msg;
+  el.hidden = false;
+}
+async function sendEmail() {
+  const f = emailFields();
+  if (!f.to || !f.subject) return showEmailStatus("err", "Recipient and subject are required.");
+  showEmailStatus("warn", "Sending…");
+  try {
+    const res = await fetch("/api/send-email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(f),
+    });
+    const r = await res.json();
+    if (r.sent) showEmailStatus("ok", `Sent to ${f.to}. ${r.detail}`);
+    else showEmailStatus("warn", r.detail);
+  } catch (err) {
+    showEmailStatus("err", err.message);
+  }
+}
+function mailtoEmail() {
+  const f = emailFields();
+  const params = new URLSearchParams({ subject: f.subject, body: f.body });
+  if (f.cc.length) params.set("cc", f.cc.join(","));
+  window.location.href = `mailto:${encodeURIComponent(f.to)}?${params.toString()}`;
+}
+async function copyEmail() {
+  const f = emailFields();
+  try {
+    await navigator.clipboard.writeText(`To: ${f.to}\nSubject: ${f.subject}\n\n${f.body}`);
+    showEmailStatus("ok", "Copied to clipboard.");
+  } catch {
+    showEmailStatus("err", "Copy failed — select the text manually.");
+  }
+}
+
+// ---------- Print ----------
+function printReport(report) {
+  if (!report) return;
+  const s = report.structured, w = report.workflow, e = report.enrichment, wo = report.workOrder;
+  const li = (arr) => (arr || []).map((x) => `<li>${esc(x)}</li>`).join("");
+  const sources = (e?.sources || [])
+    .filter((src) => !src.error)
+    .map((src) => `<p><strong>${esc(src.source)}:</strong> ${esc(src.operationalMeaning)}</p>`)
+    .join("");
+  const refs = (w?.publicDataReferences || []).map((r) => `<li><strong>${esc(r.source)}:</strong> ${esc(r.meaning)}</li>`).join("");
+  const doc = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Field Report — 327 Cherry Street</title>
+  <style>
+    body { font-family: -apple-system, Arial, sans-serif; color: #111; max-width: 740px; margin: 32px auto; padding: 0 24px; line-height: 1.5; }
+    h1 { font-size: 22px; margin: 0 0 4px; } .sub { color: #666; margin: 0 0 20px; font-size: 13px; }
+    h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; color: #888; border-bottom: 1px solid #ddd; padding-bottom: 5px; margin: 22px 0 10px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 24px; font-size: 14px; }
+    .grid div span { color: #888; } table { width: 100%; }
+    .badge { display: inline-block; padding: 2px 9px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+    .crit { background: #fde8ec; color: #c0274a; } ul { margin: 6px 0; padding-left: 20px; }
+    .desc { background: #f5f5f7; border-left: 3px solid #6e56cf; padding: 12px; border-radius: 6px; }
+    .foot { margin-top: 30px; font-size: 11px; color: #999; border-top: 1px solid #ddd; padding-top: 10px; }
+    @media print { body { margin: 0; } }
+  </style></head><body>
+    <h1>Facility Field Report</h1>
+    <p class="sub">327 Cherry Street, Manhattan, NY 10002 · Generated ${new Date().toLocaleString()}</p>
+    ${wo ? `<p><span class="badge crit">CriticalAsset Work Order</span> &nbsp;<code>${esc(wo.id)}</code></p>` : ""}
+    <h2>Issue summary</h2>
+    <div class="grid">
+      <div><span>Issue type</span><br>${esc(s.issueType)}</div>
+      <div><span>Location</span><br>${esc(s.location)}</div>
+      <div><span>Severity</span><br>${esc(s.severity)}</div>
+      <div><span>Urgency</span><br>${esc(s.urgency)}</div>
+      <div><span>Recurring</span><br>${s.recurring ? "Yes" : "No"}</div>
+      <div><span>Assigned to</span><br>${esc(w.assignmentGroup)}</div>
+    </div>
+    <h2>Description</h2>
+    <p class="desc">${esc(w.cleanedWorkOrder)}</p>
+    <h2>Original report</h2><p>"${esc(report.text)}"</p>
+    <h2>Public-record context (live NYC data)</h2>${sources || "<p>None.</p>"}
+    <h2>Compliance / obligations</h2><ul>${li(w.complianceImplications)}</ul>
+    <h2>Recommended next actions</h2><ol>${li(w.suggestedNextActions)}</ol>
+    ${w.escalate ? `<h2>Escalation</h2><p><strong>Escalate:</strong> ${esc(w.escalationReasons.join("; "))}</p>` : ""}
+    ${w.evidenceChecklist?.length ? `<h2>Outstanding evidence</h2><ul>${li(w.evidenceChecklist)}</ul>` : ""}
+    <div class="foot">Submitted via the 327 Cherry Street Facilities Operations system · Structured by ${esc(s.engine)}</div>
+  </body></html>`;
+  const win = window.open("", "_blank");
+  win.document.write(doc);
+  win.document.close();
+  win.focus();
+  setTimeout(() => win.print(), 350);
+}
+
 // ---------- events ----------
 $("refresh").addEventListener("click", load);
 $("search").addEventListener("input", (e) => { state.search = e.target.value; renderAll(); });
 $("drawer-close").addEventListener("click", closeDrawer);
 $("drawer-backdrop").addEventListener("click", closeDrawer);
-document.addEventListener("keydown", (e) => { if (e.key === "Escape") { closeDrawer(); closeIntake(); } });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") { closeDrawer(); closeIntake(); closeEmail(); } });
+
+// Email agency modal
+$("email-close").addEventListener("click", closeEmail);
+$("email-backdrop").addEventListener("click", closeEmail);
+$("email-send").addEventListener("click", sendEmail);
+$("email-mailto").addEventListener("click", mailtoEmail);
+$("email-copy").addEventListener("click", copyEmail);
 
 // Intake modal
 $("new-report").addEventListener("click", openIntake);
@@ -511,9 +845,14 @@ $("view-toggle").querySelectorAll(".seg-btn").forEach((btn) =>
     $("view-toggle").querySelectorAll(".seg-btn").forEach((b) => b.classList.toggle("active", b === btn));
     $("board-view").hidden = state.view !== "board";
     $("list-view").hidden = state.view !== "list";
-    renderAll();
+    $("map-view").hidden = state.view !== "map";
+    if (state.view === "map") ensureAreaMap();
+    else renderAll();
   })
 );
+
+$("map-radius").addEventListener("change", loadAreaMap);
+$("map-window").addEventListener("change", loadAreaMap);
 
 document.querySelectorAll(".filter-link").forEach((link) =>
   link.addEventListener("click", () => {

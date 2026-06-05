@@ -10,6 +10,8 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -76,6 +78,10 @@
                 <svg viewBox="0 0 16 16" class="ico"><path d="M2 4h12M2 8h12M2 12h12"/></svg>
                 List
               </button>
+              <button class="seg-btn" data-view="map">
+                <svg viewBox="0 0 16 16" class="ico"><path d="M6 2 2 4v10l4-2 4 2 4-2V2l-4 2-4-2Z"/><path d="M6 2v10M10 4v10"/></svg>
+                Map
+              </button>
             </div>
             <button id="refresh" class="btn-icon" title="Refresh">
               <svg viewBox="0 0 16 16" class="ico"><path d="M13.5 8a5.5 5.5 0 1 1-1.6-3.9M13.5 2v3h-3"/></svg>
@@ -101,6 +107,35 @@
         <div class="view-area">
           <div id="board-view" class="board"></div>
           <div id="list-view" class="list-wrap" hidden></div>
+          <div id="map-view" class="map-view" hidden>
+            <div class="map-panel">
+              <div class="map-panel-head">
+                <h3>Neighborhood operations map</h3>
+                <p class="muted">Live 311 reports for facility-relevant issues around 327 Cherry Street.</p>
+              </div>
+              <div class="map-controls">
+                <label class="map-ctl">Radius
+                  <select id="map-radius">
+                    <option value="500">500 m</option>
+                    <option value="1000" selected>1 km</option>
+                    <option value="2000">2 km</option>
+                  </select>
+                </label>
+                <label class="map-ctl">Window
+                  <select id="map-window">
+                    <option value="6">6 months</option>
+                    <option value="12" selected>12 months</option>
+                    <option value="36">3 years</option>
+                  </select>
+                </label>
+              </div>
+              <div class="map-summary" id="map-summary"></div>
+              <div class="map-legend-panel" id="map-legend"></div>
+            </div>
+            <div class="map-canvas-wrap">
+              <div id="area-map" class="area-map"></div>
+            </div>
+          </div>
         </div>
       </main>
     </div>
@@ -155,6 +190,37 @@
         <button class="btn-primary btn-block" id="intake-run">Turn into a work order</button>
       </div>
       <div class="modal-result" id="intake-result" hidden></div>
+    </div>
+
+    <!-- Email agency modal -->
+    <div class="modal-backdrop" id="email-backdrop" hidden></div>
+    <div class="modal" id="email-modal" hidden>
+      <div class="modal-head">
+        <div>
+          <h2>Email the responsible agency</h2>
+          <p class="muted" id="email-agency-note">Drafting…</p>
+        </div>
+        <button class="drawer-close" id="email-close" aria-label="Close">
+          <svg viewBox="0 0 16 16" class="ico"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <label class="field-label">To</label>
+        <input id="email-to" type="text" />
+        <label class="field-label">Cc <span class="muted">(comma-separated)</span></label>
+        <input id="email-cc" type="text" />
+        <label class="field-label">Subject</label>
+        <input id="email-subject" type="text" />
+        <label class="field-label">Message</label>
+        <textarea id="email-body" style="min-height:200px"></textarea>
+        <p class="muted email-warn">Agency addresses are routing placeholders — verify before sending a real complaint.</p>
+        <div class="email-actions">
+          <button class="btn-primary" id="email-send">Send</button>
+          <button class="btn-ghost" id="email-mailto">Open in mail client</button>
+          <button class="btn-ghost" id="email-copy">Copy</button>
+        </div>
+        <div id="email-status" class="email-status" hidden></div>
+      </div>
     </div>
 
     <script src="app.js"></script>
